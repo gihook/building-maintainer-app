@@ -1,0 +1,18 @@
+@page
+@model BuildingMaintainerWebApp.Pages.IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Building Maintainer</h1>
+    <p>Select a sheet to view:</p>
+    <ul>
+        @foreach (var sheetName in Model.SheetNames)
+        {
+            <li><a href="/sheet/@sheetName.Replace(" ", "-")">@sheetName</a></li>
+        }
+    </ul>
+    <hr />
+    <p><a href="/hangfire">Hangfire Dashboard</a></p>
+</div>

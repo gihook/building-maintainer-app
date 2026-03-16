@@ -1,25 +1,24 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BuildingMaintainerWebApp.Models;
 using BuildingMaintainerWebApp.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BuildingMaintainerWebApp.Pages
 {
-    public class HistoryModel : PageModel
+    public class IndexModel : PageModel
     {
         private readonly SheetsService _sheetsService;
 
-        public List<ReplacementHistory> History { get; set; }
+        public List<string> SheetNames { get; set; }
 
-        public HistoryModel(SheetsService sheetsService)
+        public IndexModel(SheetsService sheetsService)
         {
             _sheetsService = sheetsService;
         }
 
         public async Task OnGetAsync()
         {
-            History = await _sheetsService.GetReplacementHistoryAsync();
+            SheetNames = await _sheetsService.GetSheetNamesAsync();
         }
     }
 }

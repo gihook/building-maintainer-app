@@ -29,6 +29,12 @@ app.UseHangfireDashboard(); // Optional: Map dashboard to /hangfire
 app.MapRazorPages();
 
 app.MapGet("/", () => "Building Maintainer Web App is running. Check /hangfire for dashboard.");
+app.MapRazorPages();
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+});
 
 // Schedule the job to run daily. You can adjust the cron expression as needed.
 // Cron.Daily() runs at midnight UTC. You can change this to run at a specific time, e.g., "0 8 * * *" for 8 AM.
