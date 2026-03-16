@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.Configure<MaintainerConfig>(builder.Configuration.GetSection("MaintainerConfig"));
 builder.Services.AddScoped<BuildingMaintainerJob>();
+builder.Services.AddSingleton<BuildingMaintainerWebApp.Services.SheetsService>();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 // Add Hangfire services
 builder.Services.AddHangfire(configuration =>
@@ -24,6 +26,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseHangfireDashboard(); // Optional: Map dashboard to /hangfire
+app.MapRazorPages();
 
 app.MapGet("/", () => "Building Maintainer Web App is running. Check /hangfire for dashboard.");
 
