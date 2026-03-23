@@ -45,4 +45,3 @@ RecurringJob.AddOrUpdate<BuildingMaintainerJob>(
 );
 
 app.Run();
-

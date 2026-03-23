@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BuildingMaintainerWebApp.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -10,9 +7,9 @@ namespace BuildingMaintainerWebApp.Pages
     {
         private readonly SheetsService _sheetsService;
 
-        public List<Dictionary<string, string>> SheetData { get; set; }
-        public List<string> Headers { get; set; }
-        public string SheetName { get; set; }
+        public List<Dictionary<string, string>> SheetData { get; set; } = [];
+        public List<string> Headers { get; set; } = [];
+        public string SheetName { get; set; } = string.Empty;
 
         public SheetModel(SheetsService sheetsService)
         {

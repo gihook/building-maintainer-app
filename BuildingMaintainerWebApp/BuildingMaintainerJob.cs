@@ -188,4 +188,3 @@ public class BuildingMaintainerJob
         return $"{today.Year}-{today.Month}-{today.Day}";
     }
 }
-

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using BuildingMaintainerWebApp.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -9,7 +7,7 @@ namespace BuildingMaintainerWebApp.Pages
     {
         private readonly SheetsService _sheetsService;
 
-        public List<string> SheetNames { get; set; }
+        public List<string> SheetNames { get; set; } = [];
 
         public IndexModel(SheetsService sheetsService)
         {
