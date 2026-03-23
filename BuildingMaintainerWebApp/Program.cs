@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<MaintainerConfig>(builder.Configuration.GetSection("MaintainerConfig"));
 builder.Services.AddScoped<BuildingMaintainerJob>();
 builder.Services.AddSingleton<BuildingMaintainerWebApp.Services.SheetsService>();
+builder.Services.AddHttpClient<BuildingMaintainerWebApp.Services.WahaService>();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 // Add Hangfire services

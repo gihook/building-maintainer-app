@@ -6,6 +6,18 @@
 
 <div class="text-center">
     <h1 class="display-4">Building Maintainer</h1>
+    
+    <div class="mb-3">
+        @if (Model.IsWahaConnected)
+        {
+            <span class="badge bg-success">WhatsApp: Connected</span>
+        }
+        else
+        {
+            <span class="badge bg-danger">WhatsApp: Disconnected / Invalid Credentials</span>
+        }
+    </div>
+
     <p>Select a sheet to view:</p>
     <ul>
         @foreach (var sheetName in Model.SheetNames)
@@ -14,5 +26,6 @@
         }
     </ul>
     <hr />
+    <p><a href="/whatsapp">Send WhatsApp Message</a></p>
     <p><a href="/hangfire">Hangfire Dashboard</a></p>
 </div>

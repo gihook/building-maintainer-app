@@ -12,6 +12,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
       - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS:-8080}
       - WAHA_API_URL=${WAHA_API_URL:-http://waha:3000}
+      - WAHA_API_KEY=${WAHA_API_KEY:-}
     depends_on:
       - waha
     volumes:
@@ -25,6 +26,7 @@ services:
     env_file: .env
     environment:
       - WAHA_LOG_LEVEL=${WAHA_LOG_LEVEL:-info}
+      - WHATSAPP_API_KEY=${WAHA_API_KEY:-}
     volumes:
       - waha_data:/app/.waha
 
