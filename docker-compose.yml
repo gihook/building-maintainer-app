@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: BuildingMaintainerWebApp/Dockerfile
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    env_file: .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
+      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS:-8080}
+      - WAHA_API_URL=${WAHA_API_URL:-http://waha:3000}
+    depends_on:
+      - waha
+
+  waha:
+    image: devlikeapro/waha
+    ports:
+      - "${WAHA_PORT:-3000}:3000"
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - WAHA_LOG_LEVEL=${WAHA_LOG_LEVEL:-info}
+    volumes:
+      - waha_data:/app/.waha
+
+volumes:
+  waha_data:
