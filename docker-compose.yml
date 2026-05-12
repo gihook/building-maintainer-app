@@ -1,35 +1,34 @@
 version: '3.8'
 
 services:
-  app:
+  web:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: building-maintainer-app
+      dockerfile: BuildingMaintainerWebApp/Dockerfile
     ports:
-      - "${APP_PORT:-8080}:8080"
+      - "${WEB_PORT:-8080}:8080"
+    env_file: .env
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:8080
-      - MaintainerConfig__CredentialsPath=/app/credentials.json
-      - WAHA_API_URL=http://waha:3000
-    volumes:
-      - ${CREDENTIALS_PATH:-./credentials.json}:/app/credentials.json:ro
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
+      - ASPNETCORE_HTTP_PORTS=${ASPNETCORE_HTTP_PORTS:-8080}
+      - WAHA_API_URL=${WAHA_API_URL:-http://waha:3000}
+      - WAHA_API_KEY=${WAHA_API_KEY:-}
     depends_on:
       - waha
-    restart: unless-stopped
+    volumes:
+      - ${LOCAL_CREDENTIALS_PATH:-./credentials.json}:/app/credentials.json
 
   waha:
-    image: devlikeapro/waha:latest
-    container_name: waha
+    image: devlikeapro/waha
     ports:
       - "${WAHA_PORT:-3000}:3000"
+    restart: unless-stopped
+    env_file: .env
     environment:
-      - WAHA_HTTP_HOST=0.0.0.0
-      - WAHA_HTTP_PORT=3000
+      - WAHA_LOG_LEVEL=${WAHA_LOG_LEVEL:-info}
+      - WHATSAPP_API_KEY=${WAHA_API_KEY:-}
     volumes:
       - waha_data:/app/.waha
-    restart: unless-stopped
 
 volumes:
   waha_data:

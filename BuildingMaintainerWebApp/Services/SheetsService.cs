@@ -1,8 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using BuildingMaintainerWebApp.Models;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
@@ -23,14 +18,17 @@ namespace BuildingMaintainerWebApp.Services
 
         private Google.Apis.Sheets.v4.SheetsService GetSheetsService()
         {
-            var credential = GoogleCredential.FromFile(_config.CredentialsPath)
+            var credential = GoogleCredential
+                .FromFile(_config.CredentialsPath)
                 .CreateScoped(Google.Apis.Sheets.v4.SheetsService.Scope.SpreadsheetsReadonly);
 
-            return new Google.Apis.Sheets.v4.SheetsService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = "Building Maintainer App",
-            });
+            return new Google.Apis.Sheets.v4.SheetsService(
+                new BaseClientService.Initializer()
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = "Building Maintainer App",
+                }
+            );
         }
 
         public async Task<List<string>> GetSheetNamesAsync()
@@ -51,7 +49,10 @@ namespace BuildingMaintainerWebApp.Services
         public async Task<List<Dictionary<string, string>>> GetSheetDataAsync(string sheetName)
         {
             var data = new List<Dictionary<string, string>>();
-            var request = _sheetsService.Spreadsheets.Values.Get(_config.SpreadsheetId, $"{sheetName}!A:Z");
+            var request = _sheetsService.Spreadsheets.Values.Get(
+                _config.SpreadsheetId,
+                $"{sheetName}!A:Z"
+            );
             var response = await request.ExecuteAsync();
             if (response.Values != null && response.Values.Count > 1)
             {

@@ -1,0 +1,52 @@
+@page
+@model BuildingMaintainerWebApp.Pages.WhatsAppModel
+@{
+    ViewData["Title"] = "Send WhatsApp Message";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h3 class="card-title mb-0">Send WhatsApp Message</h3>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.StatusMessage))
+                    {
+                        var alertClass = Model.IsError ? "alert-danger" : "alert-success";
+                        <div class="alert @alertClass alert-dismissible fade show" role="alert">
+                            @Model.StatusMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="SelectedChatId" class="form-label fw-bold">Select Chat</label>
+                            <select asp-for="SelectedChatId" asp-items="Model.Chats" class="form-select">
+                                <option value="">-- Select a Chat --</option>
+                            </select>
+                            <span asp-validation-for="SelectedChatId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="MessageText" class="form-label fw-bold">Message Content</label>
+                            <textarea asp-for="MessageText" class="form-control" rows="6" placeholder="Write your message here..."></textarea>
+                            <span asp-validation-for="MessageText" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-send-fill me-2"></i> Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <a href="/" class="btn btn-outline-secondary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
