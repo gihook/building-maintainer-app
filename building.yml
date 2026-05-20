@@ -1,0 +1,10 @@
+# ~/.config/termuxinator/building.yml
+
+name: building
+on_project_start:
+  - docker-compose up
+windows:
+  - waha:
+      layout: main-vertical
+      panes:
+        - #empty

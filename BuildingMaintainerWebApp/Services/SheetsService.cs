@@ -1,12 +1,24 @@
+using System;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
-using Google.Apis.Sheets.v4;
 using Microsoft.Extensions.Options;
 
 namespace BuildingMaintainerWebApp.Services
 {
     public class SheetsService
     {
+        private class ServiceAccountDetails
+        {
+            [JsonPropertyName("client_email")]
+            public string? ClientEmail { get; set; }
+
+            [JsonPropertyName("private_key")]
+            public string? PrivateKey { get; set; }
+        }
+
         private readonly MaintainerConfig _config;
         private readonly Google.Apis.Sheets.v4.SheetsService _sheetsService;
 
@@ -18,9 +30,20 @@ namespace BuildingMaintainerWebApp.Services
 
         private Google.Apis.Sheets.v4.SheetsService GetSheetsService()
         {
-            var credential = GoogleCredential
-                .FromFile(_config.CredentialsPath)
-                .CreateScoped(Google.Apis.Sheets.v4.SheetsService.Scope.SpreadsheetsReadonly);
+            var json = File.ReadAllText(_config.CredentialsPath);
+            var details = JsonSerializer.Deserialize<ServiceAccountDetails>(json);
+
+            if (details is null || string.IsNullOrEmpty(details.ClientEmail) || string.IsNullOrEmpty(details.PrivateKey))
+            {
+                throw new InvalidOperationException("Invalid credential file.");
+            }
+
+            var initializer = new ServiceAccountCredential.Initializer(details.ClientEmail)
+            {
+                Scopes = new[] { Google.Apis.Sheets.v4.SheetsService.Scope.SpreadsheetsReadonly }
+            }.FromPrivateKey(details.PrivateKey);
+
+            var credential = new ServiceAccountCredential(initializer);
 
             return new Google.Apis.Sheets.v4.SheetsService(
                 new BaseClientService.Initializer()
