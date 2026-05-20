@@ -1,4 +1,3 @@
-using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
 namespace BuildingMaintainerWebApp.Services;
@@ -17,11 +16,15 @@ public class WahaService
     private readonly HttpClient _httpClient;
     private readonly ILogger<WahaService> _logger;
 
-    public WahaService(HttpClient httpClient, IConfiguration configuration, ILogger<WahaService> logger)
+    public WahaService(
+        HttpClient httpClient,
+        IConfiguration configuration,
+        ILogger<WahaService> logger
+    )
     {
         _httpClient = httpClient;
         _logger = logger;
-        
+
         var baseUrl = configuration["WAHA_API_URL"] ?? "http://localhost:3000";
         _httpClient.BaseAddress = new Uri(baseUrl);
 
@@ -72,7 +75,7 @@ public class WahaService
             {
                 session = session,
                 chatId = chatId,
-                text = text
+                text = text,
             };
             var response = await _httpClient.PostAsJsonAsync("/api/sendText", payload);
             return response.IsSuccessStatusCode;

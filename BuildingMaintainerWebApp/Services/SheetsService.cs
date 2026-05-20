@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Google.Apis.Auth.OAuth2;
@@ -33,14 +31,18 @@ namespace BuildingMaintainerWebApp.Services
             var json = File.ReadAllText(_config.CredentialsPath);
             var details = JsonSerializer.Deserialize<ServiceAccountDetails>(json);
 
-            if (details is null || string.IsNullOrEmpty(details.ClientEmail) || string.IsNullOrEmpty(details.PrivateKey))
+            if (
+                details is null
+                || string.IsNullOrEmpty(details.ClientEmail)
+                || string.IsNullOrEmpty(details.PrivateKey)
+            )
             {
                 throw new InvalidOperationException("Invalid credential file.");
             }
 
             var initializer = new ServiceAccountCredential.Initializer(details.ClientEmail)
             {
-                Scopes = new[] { Google.Apis.Sheets.v4.SheetsService.Scope.SpreadsheetsReadonly }
+                Scopes = new[] { Google.Apis.Sheets.v4.SheetsService.Scope.SpreadsheetsReadonly },
             }.FromPrivateKey(details.PrivateKey);
 
             var credential = new ServiceAccountCredential(initializer);
