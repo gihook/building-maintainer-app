@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   waha:
     image: devlikeapro/waha
@@ -7,9 +5,13 @@ services:
       - "${WAHA_PORT:-3000}:3000"
     restart: unless-stopped
     env_file: .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - WAHA_LOG_LEVEL=${WAHA_LOG_LEVEL:-info}
       - WHATSAPP_API_KEY=${WAHA_API_KEY:-}
+      - WHATSAPP_HOOK_URL=http://host.docker.internal:5100/handle-message
+      - WHATSAPP_HOOK_EVENTS=message,message.any
     volumes:
       - waha_data:/app/.waha
 
