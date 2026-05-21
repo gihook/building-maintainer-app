@@ -32,6 +32,7 @@ app.UseAuthorization();
 
 app.UseHangfireDashboard(); // Optional: Map dashboard to /hangfire
 
+app.MapControllers();
 app.MapRazorPages();
 
 // Schedule the job to run daily. You can adjust the cron expression as needed.
@@ -41,5 +42,8 @@ RecurringJob.AddOrUpdate<BuildingMaintainerJob>(
     job => job.RunAsync(),
     Cron.Minutely()
 );
+
+app.Run();
+
 
 app.Run();
